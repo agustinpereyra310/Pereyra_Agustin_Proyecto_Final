@@ -1,0 +1,74 @@
+SISTEMA DE SOCIOS - BOCA
+========================
+
+Sistema web de registro, inicio de sesion y administracion de usuarios
+hecho con PHP, MySQL (PDO), HTML y CSS.
+
+
+REQUISITOS
+----------
+- XAMPP (o Laragon) con Apache y MySQL
+- Un navegador
+
+
+INSTALACION
+-----------
+1. Copiar la carpeta del proyecto (Boca_socios) dentro de:
+      C:\xampp\htdocs\
+
+2. Abrir el panel de XAMPP y encender Apache y MySQL (boton "Start").
+
+3. Abrir phpMyAdmin en el navegador:
+      http://localhost/phpmyadmin
+
+4. Ir a la pestania "Importar", elegir el archivo boca_socios.sql
+   y presionar "Importar". Esto crea la base "boca_socios" y la tabla
+   "usuarios".
+
+5. Abrir el sistema en el navegador:
+      http://localhost/Boca_socios/
+
+   (El nombre debe coincidir con el de la carpeta que copiaste a htdocs.)
+
+
+CONEXION A LA BASE DE DATOS
+---------------------------
+Los datos estan en conexion.php. Vienen con los valores por defecto
+de XAMPP:
+   host: localhost
+   base: boca_socios
+   usuario: root
+   contrasenia: (vacia)
+Si tu MySQL usa otros datos, modificalos en ese archivo.
+
+
+COMO CREAR EL PRIMER ADMINISTRADOR
+----------------------------------
+1. Entrar a http://localhost/Boca_socios/registro.php y registrar
+   una cuenta normal.
+2. En phpMyAdmin, abrir la base "boca_socios", pestania "SQL", y ejecutar
+   (cambiando el correo por el que usaste):
+
+      UPDATE usuarios SET rol = 'admin' WHERE email = 'tu_correo@ejemplo.com';
+
+3. Cerrar sesion y volver a iniciar. Ahora se accede al panel
+   administrativo.
+
+
+ARCHIVOS PRINCIPALES
+--------------------
+index.php               Pagina de inicio del sistema
+conexion.php            Conexion a MySQL con PDO
+funciones.php           Funciones del token CSRF
+registro.php            Registro publico de socios
+login.php               Inicio de sesion
+panel.php               Panel personal del usuario
+cerrar_sesion.php       Cierre de sesion
+admin_usuarios.php      Listado y buscador de usuarios activos (admin)
+admin_crear_usuario.php Alta de usuarios desde el panel admin
+editar_usuario.php      Edicion de datos de un usuario
+archivar_usuario.php    Archivado de cuentas (no se borra nada)
+usuarios_archivados.php Listado de usuarios archivados
+reactivar_usuario.php   Reactivacion de cuentas archivadas
+styles.css              Estilos de la interfaz
+boca_socios.sql         Script para crear la base de datos y la tabla

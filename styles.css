@@ -1,0 +1,165 @@
+/* Estilos Generales - Portal Boca Juniors */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0b1329; /* Azul profundo institucional */
+    color: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Cabecera / Hero */
+.hero {
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
+    border-bottom: 4px solid #f39c12; /* Franja oro */
+    padding: 2.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.hero h1 {
+    font-size: 2rem;
+    color: #f39c12; /* Amarillo Boca */
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero p {
+    color: #cbd5e1;
+    font-size: 1rem;
+}
+
+/* Contenedores de Formularios y Paneles */
+.contenedor-auth, .contenedor-panel {
+    max-width: 500px;
+    margin: 3rem auto;
+    background: #111c38;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-top: 4px solid #f39c12;
+    width: 90%;
+}
+
+.contenedor-panel {
+    max-width: 700px;
+}
+
+/* Títulos internos */
+h2 {
+    color: #f39c12;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid rgba(243, 156, 18, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+/* Formularios */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: #0b1329;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+/* Botones */
+.btn-boca {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #f39c12;
+    color: #0b1329;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    transition: background 0.3s ease, transform 0.1s ease;
+    margin-top: 1rem;
+}
+
+.btn-boca:hover {
+    background-color: #d68910;
+    transform: translateY(-1px);
+}
+
+/* Enlaces y textos secundarios */
+.auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.auth-links a {
+    color: #f39c12;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+/* Datos de socio en panel */
+.socio-info {
+    background: #0b1329;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #f39c12;
+}
+
+.socio-info p {
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+}
+
+.socio-info strong {
+    color: #f39c12;
+}
+
+/* Mensajes de error o éxito */
+.alert-error {
+    background-color: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
