@@ -58,28 +58,28 @@ $misEntradas = $stmtMisEntradas->fetchAll(PDO::FETCH_ASSOC);
             margin: 0;
             padding-bottom: 4rem;
         }
-        /* Barra superior */
+        /* Barra superior unificada */
         .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.4rem 3rem;
+            padding: 1.2rem 2.5rem;
             background-color: #001f5b;
             border-bottom: 2px solid #f3b229;
         }
         .top-nav .logo-club {
             font-weight: bold;
             color: #f3b229;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
         .top-nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.8rem;
         }
         .top-nav-links a {
             color: #ffffff;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: color 0.2s;
         }
@@ -110,11 +110,28 @@ $misEntradas = $stmtMisEntradas->fetchAll(PDO::FETCH_ASSOC);
             font-size: 1.8rem;
             margin-bottom: 1rem;
         }
-        .estadio-icon-grande {
-            text-align: center;
-            font-size: 4.5rem;
-            margin: 1.5rem 0;
+        
+        /* Contenedor y estilo para la foto de La Bombonera */
+        .estadio-imagen-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 1.5rem 0 2rem 0;
+            border: 1px solid rgba(243, 178, 41, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.35);
         }
+        .img-bombonera {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .img-bombonera:hover {
+            transform: scale(1.02);
+        }
+
         .texto-destacado {
             text-align: center;
             color: #e2e8f0;
@@ -177,7 +194,7 @@ $misEntradas = $stmtMisEntradas->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-    <!-- BARRA SUPERIOR -->
+    <!-- BARRA SUPERIOR UNIFICADA -->
     <header class="top-nav">
         <div class="logo-club">CABJ | Portal de Socios</div>
         <div class="top-nav-links">
@@ -185,6 +202,7 @@ $misEntradas = $stmtMisEntradas->fetchAll(PDO::FETCH_ASSOC);
             <a href="partidos.php" style="color: #f3b229;">Partidos</a>
             <a href="pagos.php">Pagos</a>
             <a href="beneficios.php">Beneficios</a>
+            <a href="categoria.php">Mi Categoría</a>
             <?php if (($user['rol'] ?? '') === 'admin'): ?>
                 <a href="admin_usuarios.php" style="color: #f3b229;">Admin</a>
             <?php endif; ?>
@@ -205,7 +223,11 @@ $misEntradas = $stmtMisEntradas->fetchAll(PDO::FETCH_ASSOC);
         <!-- CAJA 1: VENÍ A ALENTAR -->
         <div class="card-seccion-grande">
             <h3>Vení a alentar</h3>
-            <div class="estadio-icon-grande">🏟️</div>
+            
+            <!-- IMAGEN DE LA BOMBONERA -->
+            <div class="estadio-imagen-container">
+                <img src="img/bombonera.jpg" alt="La Bombonera - Club Atlético Boca Juniors" class="img-bombonera">
+            </div>
             
             <?php if (!empty($partidos)): ?>
                 <p class="texto-destacado">
@@ -255,8 +277,8 @@ $misEntradas = $stmtMisEntradas->fetchAll(PDO::FETCH_ASSOC);
         <!-- CAJA 2: MIS AUTORIZACIONES / ABONOS -->
         <div class="card-seccion-grande" style="border-left-color: #f3b229;">
             <h3>Mis Autorizaciones / Abonos</h3>
-            <p style="color: #e2e8f0; font-size: 1.1rem; margin: 0.6rem 0;"><strong>Titular:</strong> <?= htmlspecialchars($user['nombre'] . ' ' . $user['apellido'], ENT_QUOTES, 'UTF-8') ?></p>
-            <p style="color: #e2e8f0; font-size: 1.1rem; margin: 0.6rem 0;"><strong>Categoría:</strong> Socio Activo / Adherente</p>
+            <p style="color: #e2e8f0; font-size: 1.1rem; margin: 0.6rem 0;"><strong>Titular:</strong> <?= htmlspecialchars($user['nombre'], ENT_QUOTES, 'UTF-8') ?></p>
+            <p style="color: #e2e8f0; font-size: 1.1rem; margin: 0.6rem 0;"><strong>Categoría:</strong> Socio Adherente</p>
             <p style="margin: 0.6rem 0 1.5rem 0; color: #22c55e; font-size: 1.1rem; font-weight: bold;">✔ Estado: Cuenta habilitada para ranking y filtros.</p>
 
             <?php if (!empty($misEntradas)): ?>

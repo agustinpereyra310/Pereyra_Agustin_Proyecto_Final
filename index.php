@@ -28,7 +28,7 @@ if (isset($_SESSION['usuario_id'])) {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.4rem 3rem;
+            padding: 1.2rem 3rem;
             background-color: #001f5b;
             border-bottom: 2px solid #f3b229;
         }
@@ -76,14 +76,12 @@ if (isset($_SESSION['usuario_id'])) {
             align-items: center;
             justify-content: center;
             padding: 3rem 1.5rem;
-            background: linear-gradient(rgba(0, 18, 51, 0.8), rgba(0, 31, 91, 0.9)), url('https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
+            background-color: #0b1329;
             text-align: center;
         }
         .hero-content {
             max-width: 800px;
-            background: rgba(0, 31, 91, 0.85);
+            background: rgba(0, 31, 91, 0.88);
             padding: 3.5rem 3rem;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
@@ -148,7 +146,9 @@ if (isset($_SESSION['usuario_id'])) {
 
     <!-- BARRA SUPERIOR PÚBLICA -->
     <header class="top-nav">
-        <div class="logo-club">CABJ | Portal de Socios</div>
+        <div class="logo-club">
+            <span>CABJ | Portal de Socios</span>
+        </div>
         <div class="top-nav-links">
             <a href="login.php" class="btn-nav-outline">Iniciar Sesión</a>
             <a href="registro.php" class="btn-nav-solid">Registrarse</a>
@@ -159,7 +159,7 @@ if (isset($_SESSION['usuario_id'])) {
     <main class="hero-section">
         <div class="hero-content">
             <h1>Club Atlético Boca Juniors</h1>
-            <p>Bienvenido al portal oficial de gestión para socios. Accedé a tu cuenta, consultá tu cuota social, gestioná tus ubicaciones y viví la pasión de La Bombonera.</p>
+            <p>Bienvenido al portal oficial de gestión para socios. Accedé a tu cuenta, consultá tu cuota social y gestioná tus ubicaciones.</p>
             <div class="hero-buttons">
                 <a href="login.php" class="btn-grande btn-grande-amarillo">Iniciar Sesión</a>
                 <a href="registro.php" class="btn-grande btn-grande-azul">Crear una Cuenta</a>
