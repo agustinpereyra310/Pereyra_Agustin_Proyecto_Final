@@ -116,50 +116,76 @@ if ($esPost) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Editar usuario</title>
+    <title>Editar Usuario - Panel Admin</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main>
-        <h1>Editar usuario</h1>
-        <p><a href="admin_usuarios.php">Volver al listado</a></p>
+    <header class="top-nav">
+        <div class="logo-club">CABJ | Portal de Socios</div>
+        <div class="top-nav-links">
+            <a href="admin_usuarios.php">Panel</a>
+            <a href="cerrar_sesion.php">Cerrar sesión</a>
+        </div>
+    </header>
 
-        <?php if ($mensaje !== ''): ?>
-            <p><?= escapar($mensaje) ?></p>
-        <?php endif; ?>
+    <main class="main-container">
+        <div class="contenedor-auth" style="margin: 2rem auto;">
+            <h2>Editar Usuario</h2>
+            <p style="margin-bottom: 1.5rem;"><a href="admin_usuarios.php" style="color: #f3b229; text-decoration: none;">&larr; Volver al listado</a></p>
 
-        <?php if (!empty($errores)): ?>
-            <ul>
-                <?php foreach ($errores as $error): ?>
-                    <li><?= escapar($error) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+            <?php if ($mensaje !== ''): ?>
+                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; color: #22c55e; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <?= escapar($mensaje) ?>
+                </div>
+            <?php endif; ?>
 
-        <form action="editar_usuario.php" method="POST">
-            <!-- Token CSRF y el id del usuario, escondidos -->
-            <input type="hidden" name="csrf_token" value="<?= escapar(generar_token_csrf()) ?>">
-            <input type="hidden" name="id" value="<?= (int) $id ?>">
+            <?php if (!empty($errores)): ?>
+                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <ul style="margin: 0; padding-left: 1.2rem;">
+                        <?php foreach ($errores as $error): ?>
+                            <li><?= escapar($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
 
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" maxlength="80"
-                   value="<?= escapar($nombre) ?>" required>
+            <form action="editar_usuario.php?id=<?= (int)$id ?>" method="POST">
+                <!-- Token CSRF y el id del usuario, escondidos -->
+                <input type="hidden" name="csrf_token" value="<?= escapar(generar_token_csrf()) ?>">
+                <input type="hidden" name="id" value="<?= (int) $id ?>">
 
-            <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" name="apellido" maxlength="80"
-                   value="<?= escapar($apellido) ?>" required>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" maxlength="80"
+                           value="<?= escapar($nombre) ?>" required>
+                </div>
 
-            <label for="dni">DNI</label>
-            <input type="text" id="dni" name="dni" inputmode="numeric"
-                   pattern="[0-9]{7,8}" maxlength="8"
-                   value="<?= escapar($dni) ?>" required>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" name="apellido" maxlength="80"
+                           value="<?= escapar($apellido) ?>" required>
+                </div>
 
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" maxlength="254"
-                   value="<?= escapar($email) ?>" required>
+                <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="text" id="dni" name="dni" inputmode="numeric"
+                           pattern="[0-9]{7,8}" maxlength="8"
+                           value="<?= escapar($dni) ?>" required>
+                </div>
 
-            <button type="submit">Guardar cambios</button>
-        </form>
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" maxlength="254"
+                           value="<?= escapar($email) ?>" required>
+                </div>
+
+                <button type="submit" class="btn-boca" style="margin-top: 1rem; width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: bold; cursor: pointer;">Guardar cambios</button>
+            </form>
+        </div>
     </main>
+
+    <footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.85rem;">
+        &copy; 2026 Club Atlético Boca Juniors - Todos los derechos reservados.
+    </footer>
 </body>
 </html>

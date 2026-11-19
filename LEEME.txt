@@ -22,8 +22,8 @@ INSTALACION
       http://localhost/phpmyadmin
 
 4. Ir a la pestania "Importar", elegir el archivo boca_socios.sql
-   y presionar "Importar". Esto crea la base "boca_socios" y la tabla
-   "usuarios".
+   y presionar "Importar". Esto crea la base "boca_socios" y las tablas
+   "usuarios", "partidos" y "entradas_socios".
 
 5. Abrir el sistema en el navegador:
       http://localhost/Boca_socios/

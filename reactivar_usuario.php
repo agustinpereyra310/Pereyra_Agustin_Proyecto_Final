@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit('Método no permitido.');
 }
 
-// Verificamos el token CSRF
+// Verificamos el token CSRF (si no coincide, se corta acá)
 if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
     http_response_code(403);
     exit('Solicitud no válida.');
@@ -29,7 +29,7 @@ if ($id === false || $id === null || $id < 1) {
 }
 
 try {
-    // Quitamos la fecha de archivado: la cuenta vuelve a estar activa
+    // Reactivamos al usuario quitando la fecha de archivado (solo si estaba archivado)
     $stmt = $conexion->prepare(
         'UPDATE usuarios
          SET archivado_en = NULL

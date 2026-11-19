@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+// Guardia de seguridad: solo entra el admin
+if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] ?? '') !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
+
 require_once __DIR__ . '/conexion.php';
 require_once __DIR__ . '/funciones.php';
 
@@ -7,95 +14,87 @@ function escapar(string $valor): string {
     return htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
 }
 
-// PROTECCIÓN: solo admin
-if (!isset($_SESSION['usuario_id']) || ($_SESSION['usuario_rol'] ?? '') !== 'admin') {
-    http_response_code(403);
-    exit('Acceso denegado.');
-}
-
-// Mensaje de una acción anterior (se muestra una sola vez)
+// Mensaje de una acción anterior (reactivar): se muestra una sola vez
 $flash = $_SESSION['flash'] ?? '';
 unset($_SESSION['flash']);
 
 // Token CSRF para los botones de reactivar
 $tokenCsrf = generar_token_csrf();
 
-try {
-    // Solo usuarios archivados, los últimos archivados primero
-    $stmt = $conexion->query(
-        'SELECT id, nombre, apellido, dni, email, rol, archivado_en
-         FROM usuarios
-         WHERE archivado_en IS NOT NULL
-         ORDER BY archivado_en DESC'
-    );
-    $usuarios = $stmt->fetchAll();
-} catch (PDOException $e) {
-    error_log($e->getMessage());
-    http_response_code(500);
-    exit('No se pudo consultar la lista de archivados.');
-}
+// Traemos únicamente a los usuarios que SÍ tienen fecha de archivo (dados de baja)
+$stmt = $conexion->prepare("SELECT id, nombre, apellido, dni, email, rol, archivado_en FROM usuarios WHERE archivado_en IS NOT NULL ORDER BY archivado_en DESC");
+$stmt->execute();
+$archivados = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Usuarios archivados</title>
+    <title>Socios Archivados - Panel Admin</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main>
-        <h1>Usuarios archivados</h1>
-        <p>
-            <a href="admin_usuarios.php">Volver al listado de activos</a> |
-            <a href="cerrar_sesion.php">Cerrar sesión</a>
-        </p>
+    <header class="top-nav">
+        <div class="logo-club" style="padding-left: 1.5rem; font-weight: bold; color: #f3b229;">CABJ | Panel Administrativo</div>
+        <div class="top-nav-links" style="padding-right: 1.5rem;">
+            <a href="admin_usuarios.php">Volver al Panel</a>
+            <a href="cerrar_sesion.php" style="color: #ef4444;">Cerrar sesión</a>
+        </div>
+    </header>
 
+    <main class="main-container">
         <?php if ($flash !== ''): ?>
-            <p><strong><?= escapar($flash) ?></strong></p>
+            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; color: #22c55e; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.5rem;">✓ <?= escapar($flash) ?></div>
         <?php endif; ?>
 
-        <p><strong>Total:</strong> <?= count($usuarios) ?></p>
+        <h2 style="margin-bottom: 1rem; color: #f3b229;">Socios Archivados (Dados de baja)</h2>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">Acá se listan todos los usuarios que fueron archivados. Podés reactivarlos en cualquier momento para que recuperen el acceso.</p>
 
-        <?php if (empty($usuarios)): ?>
-            <p>No hay usuarios archivados.</p>
+        <?php if (count($archivados) === 0): ?>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 2rem; border-radius: 12px; text-align: center; color: #94a3b8;">
+                No hay socios archivados actualmente.
+            </div>
         <?php else: ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>DNI</th>
-                        <th>Correo</th>
-                        <th>Rol</th>
-                        <th>Archivado el</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($usuarios as $usuario): ?>
-                        <tr>
-                            <td><?= escapar((string) $usuario['id']) ?></td>
-                            <td><?= escapar($usuario['nombre']) ?></td>
-                            <td><?= escapar($usuario['apellido']) ?></td>
-                            <td><?= escapar($usuario['dni']) ?></td>
-                            <td><?= escapar($usuario['email']) ?></td>
-                            <td><?= escapar($usuario['rol']) ?></td>
-                            <td><?= escapar($usuario['archivado_en']) ?></td>
-                            <td>
-                                <form method="POST" action="reactivar_usuario.php" style="display:inline"
-                                      onsubmit="return confirm('¿Reactivar a este usuario?');">
+            <div style="overflow-x: auto;">
+                <table class="tabla-usuarios" style="width: 100%; border-collapse: collapse; background: rgba(0, 18, 51, 0.6); border-radius: 12px; overflow: hidden;">
+                    <thead>
+                        <tr style="background: #001233; border-bottom: 2px solid #f3b229; text-align: left;">
+                            <th style="padding: 1rem;">ID</th>
+                            <th style="padding: 1rem;">NOMBRE</th>
+                            <th style="padding: 1rem;">APELLIDO</th>
+                            <th style="padding: 1rem;">DNI</th>
+                            <th style="padding: 1rem;">CORREO</th>
+                            <th style="padding: 1rem;">FECHA DE BAJA</th>
+                            <th style="padding: 1rem; text-align: center;">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($archivados as $u): ?>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                            <td style="padding: 1rem;"><?= $u['id'] ?></td>
+                            <td style="padding: 1rem;"><?= escapar($u['nombre']) ?></td>
+                            <td style="padding: 1rem;"><?= escapar($u['apellido']) ?></td>
+                            <td style="padding: 1rem;"><?= escapar($u['dni']) ?></td>
+                            <td style="padding: 1rem;"><?= escapar($u['email']) ?></td>
+                            <td style="padding: 1rem; color: #94a3b8;"><?= date('d/m/Y H:i', strtotime($u['archivado_en'])) ?></td>
+                            <td style="padding: 1rem; text-align: center;">
+                                <form action="reactivar_usuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de reactivar a este socio?');">
                                     <input type="hidden" name="csrf_token" value="<?= escapar($tokenCsrf) ?>">
-                                    <input type="hidden" name="id" value="<?= (int) $usuario['id'] ?>">
-                                    <button type="submit">Reactivar</button>
+                                    <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
+                                    <button type="submit" style="background-color: #22c55e; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: bold; cursor: pointer;">Reactivar</button>
                                 </form>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php endif; ?>
     </main>
+
+    <footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.85rem; margin-top: 4rem;">
+        &copy; 2026 Club Atlético Boca Juniors - Todos los derechos reservados.
+    </footer>
 </body>
 </html>
